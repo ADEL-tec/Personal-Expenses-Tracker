@@ -18,6 +18,7 @@ class ChartBar extends StatelessWidget {
       children: [
         FittedBox(child: Text('\$$spendingAmount')),
         Container(
+          clipBehavior: Clip.antiAlias,
           height: 60,
           width: 10,
           decoration: BoxDecoration(
@@ -26,10 +27,15 @@ class ChartBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: FractionallySizedBox(
+            alignment: Alignment.bottomCenter,
             heightFactor: spendingPctOfTotal == 0.0
                 ? 0.0
                 : spendingAmount / spendingPctOfTotal,
-            child: Container(color: Theme.of(context).primaryColor),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(10)),
+            ),
           ),
         ),
         Text(label),

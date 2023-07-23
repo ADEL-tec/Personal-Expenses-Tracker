@@ -51,12 +51,12 @@ class _HomePageState extends State<HomePage> {
     //     id: "t3", title: "title3", amount: 100.99, date: DateTime.now()),
   ];
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
     );
     setState(() {
       _transactions.add(newTx);
@@ -76,6 +76,12 @@ class _HomePageState extends State<HomePage> {
           tx.date.isAfter(DateTime.now().subtract(const Duration(days: 7))))
       .toList();
 
+  void _deleteTransaction(int index) {
+    setState(() {
+      _transactions.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,23 +97,25 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.add)),
         ],
       ),
-      body: ListView(
+      body: Column(
         // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Chart(_recentTransactions),
-          _transactions.isEmpty
-              ? Column(
-                  children: [
-                    const Text('There is no Item yet'),
-                    const SizedBox(height: 10),
-                    Image.asset(
-                      'assets/images/no_item.png',
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                )
-              : TransactionsList(_transactions),
+          Expanded(
+            child: _transactions.isEmpty
+                ? Column(
+                    children: [
+                      const Text('There is no Item yet'),
+                      const SizedBox(height: 10),
+                      Image.asset(
+                        'assets/images/no_item.png',
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  )
+                : TransactionsList(_transactions, _deleteTransaction),
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

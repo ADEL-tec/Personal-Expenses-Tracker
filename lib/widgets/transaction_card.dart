@@ -6,9 +6,11 @@ class TransactionCard extends StatelessWidget {
   const TransactionCard({
     super.key,
     required this.transaction,
+    required this.onDelete,
   });
 
   final Transaction transaction;
+  final Function() onDelete;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -37,7 +39,9 @@ class TransactionCard extends StatelessWidget {
             Icons.delete,
             color: Colors.red,
           ),
-          onPressed: () {},
+          onPressed: () {
+            onDelete();
+          },
         ),
       ),
     );
